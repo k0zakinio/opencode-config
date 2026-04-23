@@ -1,6 +1,6 @@
 # opencode-config
 
-Custom [OpenCode](https://opencode.ai) agents and commands for multi-pass code review using local LLMs.
+Shared coding-agent config across tools. Currently covers [OpenCode](https://opencode.ai) (multi-pass code review) and [pi](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent) (terminal coding harness).
 
 ## What's in here
 
@@ -21,6 +21,14 @@ Usage: stage your changes, then run `/review` in OpenCode.
 
 Each reviewer has read-only file access and git-read-only bash access. No reviewer can edit code — they report findings for you to triage.
 
+### pi extensions
+
+TypeScript extensions for the [pi coding agent](https://www.npmjs.com/package/@mariozechner/pi-coding-agent).
+
+| Extension | What it does |
+|---|---|
+| `response-stats` | Adds a footer line showing TTFT, full response duration, separated thinking/output token counts, and tokens/s. Updates live during streaming. |
+
 ## Setup
 
 ```bash
@@ -28,7 +36,12 @@ git clone git@github.com:k0zakinio/opencode-config.git ~/Projects/opencode-confi
 ~/Projects/opencode-config/setup.sh
 ```
 
-The setup script symlinks `commands/` and `agents/` into `~/.config/opencode/` (or `$XDG_CONFIG_HOME/opencode/`). Existing dirs are backed up to `.bak`.
+The setup script symlinks:
+
+- `commands/` and `agents/` into `~/.config/opencode/` (or `$XDG_CONFIG_HOME/opencode/`)
+- each file in `pi/extensions/` into `~/.pi/agent/extensions/`
+
+Existing entries are backed up to `.bak` before being replaced. If pi is already running, `/reload` to pick up the extensions.
 
 ## Tuning
 
