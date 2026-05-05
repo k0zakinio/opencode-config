@@ -1,6 +1,6 @@
 # opencode-config
 
-Shared coding-agent config across tools. Currently covers [OpenCode](https://opencode.ai) (multi-pass code review) and [pi](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent) (terminal coding harness).
+Shared coding-agent config across tools. Covers [OpenCode](https://opencode.ai) (multi-pass code review), [pi](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent) (terminal coding harness), and [Hermes](https://hermes.sh) (profiles + skills).
 
 ## What's in here
 
@@ -40,8 +40,24 @@ The setup script symlinks:
 
 - `commands/` and `agents/` into `~/.config/opencode/` (or `$XDG_CONFIG_HOME/opencode/`)
 - each file in `pi/extensions/` into `~/.pi/agent/extensions/`
+- `hermes/profiles/*/SOUL.md` and `config.yaml` into `~/.hermes/profiles/*`
+- `hermes/skills/*` into `~/.hermes/skills/*`
 
 Existing entries are backed up to `.bak` before being replaced. If pi is already running, `/reload` to pick up the extensions.
+
+## Hermes profiles
+
+| Profile | Role |
+|---|---|
+| `developer` | Backend engineering — delegates to OpenCode |
+| `pm` | Product manager — decomposes, routes, and summarizes via Kanban |
+| `reviewer` | Code review and consolidation in the Kanban pipeline |
+
+## Hermes skills
+
+| Skill | What it does |
+|---|---|
+| `hermes-kanban/hermes-kanban-pipeline` | Kanban ticket creation and fan-out coding pipeline (Pattern A: bulk triage, Pattern B: parallel engineer + reviewer) |
 
 ## Tuning
 

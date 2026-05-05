@@ -30,4 +30,42 @@ for ext in "$REPO_DIR/pi/extensions"/*.ts; do
 done
 shopt -u nullglob
 
-echo "Done. /review, reviewer agents, and pi extensions are installed."
+# Hermes profiles
+HERMES_PROFILES_DIR="$HOME/.hermes/profiles"
+mkdir -p "$HERMES_PROFILES_DIR"
+for profile in developer pm reviewer; do
+  profile_src="$REPO_DIR/hermes/profiles/$profile"
+  profile_dst="$HERMES_PROFILES_DIR/$profile"
+  if [ -d "$profile_src" ]; then
+    for file in SOUL.md config.yaml; do
+      src="$profile_src/$file"
+      dst="$profile_dst/$file"
+      if [ -e "$src" ]; then
+        if [ -e "$dst" ] && [ ! -L "$dst" ]; then
+          echo "Backing up existing $dst to $dst.bak"
+          mv "$dst" "$dst.bak"
+        fi
+        ln -sfn "$src" "$dst"
+        echo "Linked $dst -> $src"
+      fi
+    done
+  fi
+done
+
+# Hermes skills
+HERMES_SKILLS_DIR="$HOME/.hermes/skills"
+mkdir -p "$HERMES_SKILLS_DIR"
+for skill_dir in "$REPO_DIR/hermes/skills"/*/; do
+  skill_name="$(basename "$skill_dir")"
+  skill_dst="$HERMES_SKILLS_DIR/$skill_name"
+  if [ -d "$skill_dir" ]; then
+    if [ -e "$skill_dst" ] && [ ! -L "$skill_dst" ]; then
+      echo "Backing up existing $skill_dst to $skill_dst.bak"
+      mv "$skill_dst" "$skill_dst.bak"
+    fi
+    ln -sfn "$skill_dir" "$skill_dst"
+    echo "Linked $skill_dst -> $skill_dir"
+  fi
+done
+
+echo "Done. OpenCode, pi, and hermes configs are installed."
