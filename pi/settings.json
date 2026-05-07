@@ -1,0 +1,18 @@
+{
+  "defaultModel": "qwen3.6-27b",
+  "defaultProvider": "vllm",
+  "packages": [
+    {
+      "source": "npm:@ollama/pi-web-search",
+      "extensions": [
+        "-index.ts"
+      ]
+    }
+  ],
+  "lastChangelogVersion": "0.69.0",
+  "defaultThinkingLevel": "low",
+  "enabledModels": [
+    "vllm/qwen3.6-27b",
+    "minimax/MiniMax-M2.7"
+  ]
+}
