@@ -15,6 +15,23 @@ for dir in commands agents; do
   echo "Linked $CONFIG_DIR/$dir -> $REPO_DIR/$dir"
 done
 
+# pi agent config files (models, settings, mcp)
+PI_AGENT_DIR="$HOME/.pi/agent"
+mkdir -p "$PI_AGENT_DIR"
+for config_file in models.json settings.json mcp.json; do
+  src="$REPO_DIR/pi/$config_file"
+  dst="$PI_AGENT_DIR/$config_file"
+  if [ -f "$src" ]; then
+    if [ -e "$dst" ] && [ ! -L "$dst" ]; then
+      echo "Backing up existing $dst to $dst.bak"
+      mv "$dst" "$dst.bak"
+    fi
+    cp "$src" "$dst"
+    echo "Copied $dst <- $src"
+  fi
+done
+
+# pi extensions
 PI_EXT_DIR="$HOME/.pi/agent/extensions"
 mkdir -p "$PI_EXT_DIR"
 shopt -s nullglob
@@ -29,6 +46,22 @@ for ext in "$REPO_DIR/pi/extensions"/*.ts; do
   echo "Linked $target -> $ext"
 done
 shopt -u nullglob
+
+# pi skills
+PI_SKILLS_DIR="$HOME/.pi/agent/skills"
+mkdir -p "$PI_SKILLS_DIR"
+for skill_dir in "$REPO_DIR/pi/skills"/*/; do
+  skill_name="$(basename "$skill_dir")"
+  skill_dst="$PI_SKILLS_DIR/$skill_name"
+  if [ -d "$skill_dir" ]; then
+    if [ -e "$skill_dst" ] && [ ! -L "$skill_dst" ]; then
+      echo "Backing up existing $skill_dst to $skill_dst.bak"
+      mv "$skill_dst" "$skill_dst.bak"
+    fi
+    ln -sfn "$skill_dir" "$skill_dst"
+    echo "Linked $skill_dst -> $skill_dir"
+  fi
+done
 
 # Hermes profiles
 HERMES_PROFILES_DIR="$HOME/.hermes/profiles"
